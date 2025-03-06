@@ -12,4 +12,9 @@ export interface Post {
     email: string;
     body: string;
   }
+  export interface BlogPost {
+    id: number;
+    title: string;
+    body: string;
+  }
   

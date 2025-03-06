@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
-import { Post, Comment } from "../types/blog";
+import { BlogPost, Comment } from "../types/blog";
 
 const POSTS_API = `${API_BASE_URL}/posts`;
 const COMMENTS_API = `${API_BASE_URL}/comments`;
@@ -17,40 +17,40 @@ const getFromLocalStorage = <T>(key: string): T[] => {
 };
 
 // Fetch All Blog Posts & Cache in Local Storage
-const fetchPosts = async (): Promise<Post[]> => {
-  const response = await axios.get<Post[]>(POSTS_API);
+const fetchPosts = async (): Promise<BlogPost[]> => {
+  const response = await axios.get<BlogPost[]>(POSTS_API);
   saveToLocalStorage("posts", response.data);
   return response.data;
 };
 
 // Hook: Fetch All Posts
 export const usePosts = () => {
-  return useQuery<Post[]>({
+  return useQuery<BlogPost[]>({
     queryKey: ["posts"],
     queryFn: async () => {
-      const localPosts = getFromLocalStorage<Post>("posts");
+      const localPosts = getFromLocalStorage<BlogPost>("posts");
       return localPosts.length > 0 ? localPosts : fetchPosts();
     },
-    initialData: getFromLocalStorage<Post>("posts"),
+    initialData: getFromLocalStorage<BlogPost>("posts"),
   });
 };
 
 // Fetch Single Blog Post
-const fetchPost = async (postId: string): Promise<Post> => {
-  const response = await axios.get<Post>(`${POSTS_API}/${postId}`);
+const fetchPost = async (postId: number): Promise<BlogPost> => {
+  const response = await axios.get<BlogPost>(`${POSTS_API}/${postId}`);
   return response.data;
 };
 
 // Hook: Fetch Single Post
-export const usePost = (postId: string) => {
-  return useQuery<Post>({
+export const usePost = (postId: number) => {
+  return useQuery<BlogPost | null>({
     queryKey: ["post", postId],
     queryFn: () => fetchPost(postId),
   });
 };
 
 // Fetch Comments & Cache in Local Storage
-const fetchComments = async (postId: string): Promise<Comment[]> => {
+const fetchComments = async (postId: number): Promise<Comment[]> => {
   const response = await axios.get<Comment[]>(`${COMMENTS_API}?postId=${postId}`);
   const comments = response.data || []; // ✅ Ensure it's always an array
   saveToLocalStorage(`comments_${postId}`, comments);
@@ -58,7 +58,7 @@ const fetchComments = async (postId: string): Promise<Comment[]> => {
 };
 
 // Hook: Fetch Comments
-export const useComments = (postId: string) => {
+export const useComments = (postId: number) => {
   return useQuery<Comment[]>({
     queryKey: ["comments", postId],
     queryFn: async () => {
@@ -69,48 +69,87 @@ export const useComments = (postId: string) => {
   });
 };
 
-
-// Add Comment API Call
-const postComment = async (postId: string, newComment: Omit<Comment, "id">) => {
-  const response = await axios.post<Comment>(COMMENTS_API, { ...newComment, postId });
-  return response.data;
-};
-
 // Hook: Add a New Comment
-export const useAddComment = (postId: string) => {
+export const useAddComment = (postId: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (newComment: Omit<Comment, "id">) => {
-      const response = await axios.post<Comment>(COMMENTS_API, { ...newComment, postId });
-      return response.data;
+      const existingComments = getFromLocalStorage<Comment>(`comments_${postId}`) || [];
+      const newId = existingComments.length ? Math.max(...existingComments.map((c) => c.id)) + 1 : 1;
+      const createdComment = { id: newId, postId, ...newComment };
+      
+      saveToLocalStorage(`comments_${postId}`, [...existingComments, createdComment]);
+      return createdComment;
     },
     onSuccess: (newComment) => {
-      const existingComments = getFromLocalStorage<Comment>(`comments_${postId}`) || []; // ✅ Always use an array
-      const updatedComments = [...existingComments, newComment];
-      saveToLocalStorage(`comments_${postId}`, updatedComments);
-      queryClient.setQueryData(["comments", postId], updatedComments);
+      queryClient.setQueryData(["comments", postId], (oldData: Comment[] = []) => [...oldData, newComment]);
     },
   });
 };
 
-// Delete Comment API Call
-const deleteCommentApi = async (commentId: number) => {
-  await axios.delete(`${COMMENTS_API}/${commentId}`);
-  return commentId;
-};
-
 // Hook: Delete a Comment
-export const useDeleteComment = (postId: string) => {
+export const useDeleteComment = (postId: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteCommentApi,
-    onSuccess: (deletedCommentId) => {
-      const existingComments = getFromLocalStorage<Comment>(`comments_${postId}`);
-      const updatedComments = existingComments.filter(comment => comment.id !== deletedCommentId);
+    mutationFn: async (commentId: number) => {
+      const updatedComments = getFromLocalStorage<Comment>(`comments_${postId}`).filter(comment => comment.id !== commentId);
       saveToLocalStorage(`comments_${postId}`, updatedComments);
-      queryClient.setQueryData(["comments", postId], updatedComments);
+      return commentId;
+    },
+    onSuccess: (deletedCommentId) => {
+      queryClient.setQueryData(["comments", postId], (oldData: Comment[] = []) =>
+        oldData.filter((comment) => comment.id !== deletedCommentId)
+      );
+    },
+  });
+};
+
+// Hook: Create a New Blog Post
+export const useCreatePost = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (post: Omit<BlogPost, "id">) => {
+      const existingPosts = getFromLocalStorage<BlogPost>("posts");
+      const newId = existingPosts.length ? Math.max(...existingPosts.map((p) => p.id)) + 1 : 1;
+      const newPost = { id: newId, ...post };
+      saveToLocalStorage("posts", [...existingPosts, newPost]);
+      return newPost;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] }); // ✅ Fixed invalidateQueries
+    },
+  });
+};
+
+// Hook: Update a Blog Post
+export const useUpdatePost = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (post: BlogPost) => {
+      const existingPosts = getFromLocalStorage<BlogPost>("posts");
+      const updatedPosts = existingPosts.map((p) => (p.id === post.id ? post : p));
+      saveToLocalStorage("posts", updatedPosts);
+      return post;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] }); // ✅ Fixed invalidateQueries
+    },
+  });
+};
+
+// Hook: Delete a Blog Post
+export const useDeletePost = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (postId: number) => {
+      const updatedPosts = getFromLocalStorage<BlogPost>("posts").filter((p) => p.id !== postId);
+      saveToLocalStorage("posts", updatedPosts);
+      return postId;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] }); // ✅ Fixed invalidateQueries
     },
   });
 };
