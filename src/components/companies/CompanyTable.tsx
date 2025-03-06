@@ -18,7 +18,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({ companies, onEdit, onDelete
       title: "Revenue",
       dataIndex: "revenue",
       key: "revenue",
-      render: (value: number) => value.toLocaleString(),
+      render: (value?: number) => (value !== undefined && value !== null ? value.toLocaleString() : "N/A"),
     },
     {
       title: "Actions",
