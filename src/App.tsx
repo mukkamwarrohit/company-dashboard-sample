@@ -19,6 +19,7 @@ const App = () => {
             <Route path="/users" element={<UsersPage />} />
             <Route path="/companies" element={<CompaniesPage />} />
             <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:postId" element={<BlogDetailsPage />} /> {/* ✅ Added Blog Details Route */}
             <Route path="/todos" element={<ToDoPage />} /> {/* ✅ To-Do Route */}
           </Routes>
         </DashboardLayout>

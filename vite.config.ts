@@ -4,7 +4,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://app.beeceptor.com/mock-server/json-placeholder",
+        target: "https://json-placeholder.mock.beeceptor.com",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

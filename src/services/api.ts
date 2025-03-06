@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useAuthStore } from "../store/authStore";
 
-const API_BASE_URL = "https://app.beeceptor.com/mock-server/json-placeholder";
+const API_BASE_URL = "https://json-placeholder.mock.beeceptor.com";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,

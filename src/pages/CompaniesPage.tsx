@@ -39,6 +39,11 @@ const CompaniesPage = () => {
     }
     setIsCompanyFormVisible(false);
   };
+  const handleViewCompany = (company: Company) => {
+    if (company) {
+      setSelectedCompany(company); // Ensure company data is set
+    }
+  };
 
   return (
     <div style={{ padding: "20px" }}>
