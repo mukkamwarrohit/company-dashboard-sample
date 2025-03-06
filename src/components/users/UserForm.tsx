@@ -15,17 +15,22 @@ const UserForm: React.FC<UserFormProps> = ({ user, onClose }) => {
 
   useEffect(() => {
     form.setFieldsValue(user || { name: "", email: "" });
-  }, [user]);
+  }, [user, form]);
 
   const handleSubmit = (values: Omit<User, "id">) => {
     user ? updateUser({ ...user, ...values }) : createUser(values);
+    form.resetFields();
     onClose();
   };
 
   return (
     <Form form={form} layout="vertical" onFinish={handleSubmit}>
-      <Form.Item name="name" label="Name" rules={[{ required: true, message: "Please enter the name" }]}>
-        <Input />
+      <Form.Item 
+        name="name" 
+        label="Name" 
+        rules={[{ required: true, message: "Please enter the name" }]}
+      >
+        <Input placeholder="Enter user name" />
       </Form.Item>
       <Form.Item
         name="email"
@@ -35,10 +40,11 @@ const UserForm: React.FC<UserFormProps> = ({ user, onClose }) => {
           { type: "email", message: "Please enter a valid email" },
         ]}
       >
-        <Input />
+        <Input placeholder="Enter email address" />
       </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" block>
+      <Form.Item style={{ textAlign: "right" }}>
+        <Button onClick={onClose} style={{ marginRight: 8 }}>Cancel</Button>
+        <Button type="primary" htmlType="submit">
           {user ? "Update User" : "Add User"}
         </Button>
       </Form.Item>

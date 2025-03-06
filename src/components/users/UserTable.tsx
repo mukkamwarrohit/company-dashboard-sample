@@ -6,7 +6,7 @@ interface UserTableProps {
   users: User[];
   onEdit: (user: User) => void;
   onDelete: (id: number) => void;
-  onViewDetails: (user: User) => void; // New prop for viewing details
+  onViewDetails: (user: User) => void;
 }
 
 const UserTable: React.FC<UserTableProps> = ({ users, onEdit, onDelete, onViewDetails }) => {
@@ -19,9 +19,9 @@ const UserTable: React.FC<UserTableProps> = ({ users, onEdit, onDelete, onViewDe
       key: "actions",
       render: (_, record) => (
         <Space>
-          <Button onClick={() => onViewDetails(record)}>View Details</Button>
+          <Button onClick={() => onViewDetails(record)}>View</Button>
           <Button onClick={() => onEdit(record)}>Edit</Button>
-          <Popconfirm title="Are you sure?" onConfirm={() => onDelete(record.id)}>
+          <Popconfirm title="Are you sure you want to delete this user?" onConfirm={() => onDelete(record.id)}>
             <Button danger>Delete</Button>
           </Popconfirm>
         </Space>

@@ -37,14 +37,23 @@ const BlogForm: React.FC<BlogFormProps> = ({ visible, onCancel, onSubmit, initia
       destroyOnClose
     >
       <Form form={form} layout="vertical" onFinish={handleFinish}>
-        <Form.Item name="title" label="Title" rules={[{ required: true, message: "Title is required" }]}>
-          <Input />
+        <Form.Item 
+          name="title" 
+          label="Title" 
+          rules={[{ required: true, message: "Title is required" }]}
+        >
+          <Input placeholder="Enter blog title" />
         </Form.Item>
-        <Form.Item name="body" label="Content" rules={[{ required: true, message: "Content is required" }]}>
-          <Input.TextArea rows={4} />
+        <Form.Item 
+          name="body" 
+          label="Content" 
+          rules={[{ required: true, message: "Content is required" }]}
+        >
+          <Input.TextArea rows={4} placeholder="Write blog content here..." />
         </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" block>
+        <Form.Item style={{ textAlign: "right" }}>
+          <Button onClick={onCancel} style={{ marginRight: 8 }}>Cancel</Button>
+          <Button type="primary" htmlType="submit">
             {initialValues?.id ? "Update Blog Post" : "Add Blog Post"}
           </Button>
         </Form.Item>

@@ -55,14 +55,14 @@ const BlogPage = () => {
                 <Typography.Title
                   level={4}
                   style={{ cursor: "pointer", color: "blue" }}
-                  onClick={() => navigate(`/blog/${post.id}`)} // ✅ Clicking title navigates to BlogDetailsPage
+                  onClick={() => navigate(`/blog/${post.id}`)}
                 >
                   {post.title}
                 </Typography.Title>
-                <Typography.Text>{post.body}</Typography.Text>
+                <Typography.Paragraph>{post.body}</Typography.Paragraph>
                 <Space>
                   <Button onClick={() => handleEditPost(post)}>Edit</Button>
-                  <Popconfirm title="Are you sure?" onConfirm={() => deletePost(post.id)}>
+                  <Popconfirm title="Are you sure you want to delete this post?" onConfirm={() => deletePost(post.id)}>
                     <Button danger>Delete</Button>
                   </Popconfirm>
                 </Space>

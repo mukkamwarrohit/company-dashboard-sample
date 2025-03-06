@@ -1,6 +1,6 @@
 import { Table, Button, Space, Popconfirm, Select, Input } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { useReducer, useState } from "react";
+import { useReducer, useState, useEffect } from "react";
 import { companiesReducer, CompanySortType } from "../../reducers/companiesReducer";
 import { Company } from "../../types/company";
 
@@ -14,6 +14,10 @@ interface CompanyTableProps {
 const CompanyTable: React.FC<CompanyTableProps> = ({ companies, onEdit, onDelete, onViewDetails }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortedCompanies, dispatch] = useReducer(companiesReducer, companies);
+
+  useEffect(() => {
+    dispatch({ type: CompanySortType.SORT_BY_NAME }); // Default sort
+  }, [companies]);
 
   const handleSortChange = (value: CompanySortType) => {
     dispatch({ type: value });
@@ -31,7 +35,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({ companies, onEdit, onDelete
       title: "Revenue",
       dataIndex: "revenue",
       key: "revenue",
-      render: (value?: number) => (value ? value.toLocaleString() : "N/A"),
+      render: (value?: number) => (value ? `$${value.toLocaleString()}` : "N/A"),
     },
     {
       title: "Actions",
@@ -40,7 +44,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({ companies, onEdit, onDelete
         <Space>
           <Button onClick={() => onViewDetails(record)}>View</Button>
           <Button onClick={() => onEdit(record)}>Edit</Button>
-          <Popconfirm title="Are you sure?" onConfirm={() => onDelete(record.id)}>
+          <Popconfirm title="Are you sure you want to delete?" onConfirm={() => onDelete(record.id)}>
             <Button danger>Delete</Button>
           </Popconfirm>
         </Space>
@@ -52,7 +56,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({ companies, onEdit, onDelete
     <div>
       <Space style={{ marginBottom: 16 }}>
         <Input
-          placeholder="Search by name"
+          placeholder="Search by company name"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />

@@ -2,7 +2,7 @@ import { useReducer, useState } from "react";
 import { Typography, Button, Spin, Alert, Input, Select, Modal } from "antd";
 import { useCompanies, useCreateCompany, useUpdateCompany, useDeleteCompany } from "../services/companyService";
 import CompanyTable from "../components/companies/CompanyTable";
-import CompanyForm from "../components/companies/CompanyForm"; // ✅ Import correctly
+import CompanyForm from "../components/companies/CompanyForm";
 import CompanyDetailsModal from "../components/details/CompanyDetailsModal";
 import { companiesReducer, CompanySortType } from "../reducers/companiesReducer";
 import { Company } from "../types/company";
@@ -20,7 +20,6 @@ const CompaniesPage = () => {
 
   const [sortedCompanies, dispatch] = useReducer(companiesReducer, companies);
 
-  // Filtered Companies based on Search Term
   const filteredCompanies = sortedCompanies.filter((company) =>
     company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     company.industry.toLowerCase().includes(searchTerm.toLowerCase())
@@ -38,11 +37,6 @@ const CompaniesPage = () => {
       createCompany(companyData);
     }
     setIsCompanyFormVisible(false);
-  };
-  const handleViewCompany = (company: Company) => {
-    if (company) {
-      setSelectedCompany(company); // Ensure company data is set
-    }
   };
 
   return (
@@ -80,7 +74,6 @@ const CompaniesPage = () => {
 
       <CompanyDetailsModal visible={!!selectedCompany} company={selectedCompany} onClose={() => setSelectedCompany(null)} />
 
-      {/* ✅ Fix: Use CompanyForm in Modal */}
       <Modal open={isCompanyFormVisible} onCancel={() => setIsCompanyFormVisible(false)} footer={null} destroyOnClose>
         <CompanyForm visible={isCompanyFormVisible} onCancel={() => setIsCompanyFormVisible(false)} onSubmit={handleSubmitCompany} initialValues={editingCompany} />
       </Modal>

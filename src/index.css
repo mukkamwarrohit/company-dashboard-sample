@@ -1,100 +1,117 @@
-/* Dark Mode Global Styles */
+/* 🌙 Global Dark Mode */
 [data-theme="dark"] {
   background-color: #121212;
   color: white;
 }
 
-/* Fix for Layout Content */
+/* 🛠 Fix Layout Content */
 [data-theme="dark"] .ant-layout {
-  background-color: #121212 !important;
+  background-color: #121212;
 }
 
 [data-theme="dark"] .ant-layout-content {
-  background-color: #1c1c1c !important;
-  color: white !important;
+  background-color: #1c1c1c;
+  color: white;
 }
 
-/* Fix for Sidebar Menu */
-[data-theme="dark"] .ant-menu {
-  background-color: #1c1c1c !important;
-}
-
-/* Fix for Footer */
+/* 📌 Sidebar & Footer */
+[data-theme="dark"] .ant-menu,
 [data-theme="dark"] .ant-layout-footer {
-  background-color: #141414 !important;
-  color: white !important;
+  background-color: #141414;
+  color: white;
 }
 
-/* Fix for Table (Applies Dark Background) */
+/* 🔄 Table Fixes */
 [data-theme="dark"] .ant-table {
-  background-color: #1c1c1c !important;
-  color: white !important;
+  background-color: #1c1c1c;
+  color: white;
 }
 
 [data-theme="dark"] .ant-table-thead > tr > th {
-  background-color: #333 !important;
-  color: white !important;
+  background-color: #333;
+  color: white;
 }
 
 [data-theme="dark"] .ant-table-tbody > tr > td {
-  background-color: #1c1c1c !important;
-  color: white !important;
+  background-color: #1c1c1c;
+  color: white;
 }
 
-/* Fix for Select Dropdown */
+/* 🎯 Form Inputs */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] .ant-checkbox-wrapper {
+  background-color: #222;
+  color: white;
+  border-color: #444;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: #aaa;
+}
+
+/* 🎨 Select Dropdown */
 [data-theme="dark"] .ant-select-dropdown {
-  background-color: #1c1c1c !important;
-  color: white !important;
+  background-color: #1c1c1c;
+  border-color: #555;
 }
 
 [data-theme="dark"] .ant-select-item {
-  color: white !important;
+  color: white;
 }
 
 [data-theme="dark"] .ant-select-item-option-selected {
-  background-color: #333 !important;
+  background-color: #444;
 }
 
-/* Fix for Buttons */
+/* 🔘 Buttons */
 [data-theme="dark"] .ant-btn {
-  background-color: #333 !important;
-  color: white !important;
-  border-color: white !important;
+  background-color: #333;
+  color: white;
+  border-color: #555;
+}
+
+[data-theme="dark"] .ant-btn:hover {
+  background-color: #444;
+  border-color: white;
 }
 
 [data-theme="dark"] .ant-btn-dangerous {
-  background-color: red !important;
-  color: white !important;
+  background-color: #b30000;
+  color: white;
 }
 
-/* Fix for Modal */
+[data-theme="dark"] .ant-btn-dangerous:hover {
+  background-color: #ff3333;
+}
+
+/* 🎭 Modal */
 [data-theme="dark"] .ant-modal-content {
-  background-color: #1c1c1c !important;
-  color: white !important;
+  background-color: #1c1c1c;
+  color: white;
 }
 
 [data-theme="dark"] .ant-modal-header {
-  background-color: #333 !important;
-  color: white !important;
+  background-color: #333;
 }
 
 [data-theme="dark"] .ant-modal-footer {
-  background-color: #1c1c1c !important;
+  background-color: #1c1c1c;
 }
 
-/* Fix for Pagination */
+/* 📌 Pagination */
 [data-theme="dark"] .ant-pagination-item {
-  background-color: #1c1c1c !important;
-  border-color: white !important;
-  color: white !important;
+  background-color: #1c1c1c;
+  border-color: white;
+  color: white;
 }
 
 [data-theme="dark"] .ant-pagination-item-active {
-  background-color: #333 !important;
-  color: white !important;
+  background-color: #333;
 }
 
 [data-theme="dark"] .ant-pagination-prev,
 [data-theme="dark"] .ant-pagination-next {
-  color: white !important;
+  color: white;
 }

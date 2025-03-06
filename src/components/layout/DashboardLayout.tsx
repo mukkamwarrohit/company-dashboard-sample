@@ -11,10 +11,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const { logout } = useAuthStore();
 
-  // ✅ Dark Mode State
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
-  });
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem("theme") === "dark");
 
   useEffect(() => {
     document.body.setAttribute("data-theme", darkMode ? "dark" : "light");
@@ -41,8 +38,18 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         <Menu theme={darkMode ? "dark" : "light"} mode="inline" items={menuItems} />
       </Sider>
       <Layout>
-        <Header style={{ background: darkMode ? "#141414" : "#fff", padding: "0 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography.Title level={3} style={{ margin: 0, color: darkMode ? "#fff" : "#000" }}>Admin Dashboard</Typography.Title>
+        <Header
+          style={{
+            background: darkMode ? "#141414" : "#fff",
+            padding: "0 20px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography.Title level={3} style={{ margin: 0, color: darkMode ? "#fff" : "#000" }}>
+            Admin Dashboard
+          </Typography.Title>
           <Switch
             checked={darkMode}
             onChange={() => setDarkMode(!darkMode)}
@@ -50,10 +57,27 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             unCheckedChildren={<SunOutlined />}
           />
         </Header>
-        <Content style={{ margin: "16px", padding: "20px", background: darkMode ? "#1c1c1c" : "#fff", color: darkMode ? "#fff" : "#000", minHeight: "80vh" }}>
+        <Content
+          style={{
+            margin: "16px",
+            padding: "20px",
+            background: darkMode ? "#1c1c1c" : "#fff",
+            color: darkMode ? "#fff" : "#000",
+            minHeight: "80vh",
+            borderRadius: 8,
+          }}
+        >
           {children}
         </Content>
-        <Footer style={{ textAlign: "center", background: darkMode ? "#141414" : "#fff", color: darkMode ? "#fff" : "#000" }}>Ant Design Dashboard ©2025</Footer>
+        <Footer
+          style={{
+            textAlign: "center",
+            background: darkMode ? "#141414" : "#fff",
+            color: darkMode ? "#fff" : "#000",
+          }}
+        >
+          Ant Design Dashboard ©{new Date().getFullYear()}
+        </Footer>
       </Layout>
     </Layout>
   );

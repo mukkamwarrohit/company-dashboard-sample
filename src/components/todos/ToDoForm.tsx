@@ -21,7 +21,7 @@ const ToDoForm: React.FC<ToDoFormProps> = ({ visible, onCancel, onSubmit, initia
   }, [initialValues, form]);
 
   const handleFinish = (values: Omit<ToDo, "id">) => {
-    if (!values.title.trim()) return; // ✅ Prevent blank titles
+    if (!values.title.trim()) return;
     onSubmit(values);
     form.resetFields();
   };
@@ -36,16 +36,22 @@ const ToDoForm: React.FC<ToDoFormProps> = ({ visible, onCancel, onSubmit, initia
       }}
       footer={null}
       destroyOnClose
+      centered
     >
       <Form form={form} layout="vertical" onFinish={handleFinish}>
-        <Form.Item name="title" label="To-Do Title" rules={[{ required: true, message: "Title is required" }]}>
-          <Input />
+        <Form.Item 
+          name="title" 
+          label="To-Do Title" 
+          rules={[{ required: true, message: "Title is required" }]}
+        >
+          <Input placeholder="Enter to-do task" />
         </Form.Item>
         <Form.Item name="completed" valuePropName="checked">
-          <Checkbox>Completed</Checkbox>
+          <Checkbox>Mark as Completed</Checkbox>
         </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" block>
+        <Form.Item style={{ textAlign: "right" }}>
+          <Button onClick={onCancel} style={{ marginRight: 8 }}>Cancel</Button>
+          <Button type="primary" htmlType="submit">
             {initialValues?.id ? "Update To-Do" : "Add To-Do"}
           </Button>
         </Form.Item>

@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Typography, Spin, Alert, Card, List, Input, Button, Popconfirm, notification } from "antd";
+import { Typography, Spin, Alert, Card, List, Input, Button, Popconfirm } from "antd";
 import { usePost, useComments, useAddComment, useDeleteComment } from "../services/blogService";
-import { Comment } from "../types/blog";
 import { showNotification } from "../utils/Notifications";
 
 const BlogDetailsPage = () => {
@@ -15,14 +14,6 @@ const BlogDetailsPage = () => {
   const { mutate: deleteComment } = useDeleteComment(numericPostId);
 
   const [newComment, setNewComment] = useState({ name: "", email: "", body: "" });
-
-  const showNotification = (type: "success" | "error" | "info", message: string, description?: string) => {
-    notification[type]({
-      message,
-      description,
-      placement: "topRight",
-    });
-  };
 
   const handleAddComment = () => {
     if (!newComment.name || !newComment.email || !newComment.body) return;
@@ -60,7 +51,7 @@ const BlogDetailsPage = () => {
         rows={3}
         style={{ marginBottom: "10px" }}
       />
-      <Button type="primary" onClick={handleAddComment}>Add Comment</Button>
+      <Button type="primary" onClick={handleAddComment} style={{ marginBottom: "20px" }}>Add Comment</Button>
       {commentsLoading ? (
         <Spin size="large" />
       ) : commentsError || !Array.isArray(comments) ? (

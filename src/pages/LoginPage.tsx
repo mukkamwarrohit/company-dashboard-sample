@@ -25,11 +25,9 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-      <Card style={{ width: 400, padding: 20 }}>
-        <Typography.Title level={2} style={{ textAlign: "center" }}>
-          Login
-        </Typography.Title>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", background: "#f5f5f5" }}>
+      <Card style={{ width: 400, padding: 20, boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" }}>
+        <Typography.Title level={2} style={{ textAlign: "center" }}>Login</Typography.Title>
         {error && <Alert message={error} type="error" showIcon style={{ marginBottom: 10 }} />}
         <Form onFinish={handleSubmit} layout="vertical">
           <Form.Item
@@ -37,13 +35,13 @@ const LoginPage: React.FC = () => {
             label="Email"
             rules={[
               { required: true, message: "Please enter your email" },
-              { type: "email", message: "Please enter a valid email" },
+              { type: "email", message: "Please enter a valid email" }
             ]}
           >
-            <Input />
+            <Input placeholder="Enter your email" />
           </Form.Item>
           <Form.Item name="password" label="Password" rules={[{ required: true, message: "Please enter your password" }]}>
-            <Input.Password />
+            <Input.Password placeholder="Enter your password" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" block loading={loading}>
