@@ -1,54 +1,76 @@
-# React + TypeScript + Vite
+# Company & User Management Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Project Overview
+This project is a **React-based Admin Dashboard** for managing companies, users, roles, posts, and comments. It uses **React, Vite, TypeScript, Zustand, React Query, Ant Design, and Axios** for efficient state management and API interactions.
 
-Currently, two official plugins are available:
+## 🚀 Features Implemented
+- **User Authentication** (Login system with mock API & role-based access)
+- **Dashboard Overview** (Shows statistics for users, companies, roles, and posts)
+- **User Management** (CRUD operations for users with role-based restrictions)
+- **Company Management** (List and filter companies with CRUD operations)
+- **Blog & Comments System** (Users can create, edit, and delete posts & comments)
+- **Protected Routes** (Restrict pages based on roles)
+- **State Management** (Zustand for global state, React Query for data fetching)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🛠️ Installation & Setup
+### **1️⃣ Clone the Repository**
+```sh
+git clone https://github.com/your-repo/company-dashboard.git
+cd company-dashboard
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+### **2️⃣ Install Dependencies**
+```sh
+npm install
 ```
+
+### **3️⃣ Start the Development Server**
+```sh
+npm run dev
+```
+
+## 🔐 Mock User Credentials (For Testing Login)
+| Role  | Email               | Password   |
+|--------|----------------------|------------|
+| **Admin**  | `admin@example.com`  | `admin123`  |
+| **Editor**  | `editor@example.com`  | `editor123`  |
+| **Viewer**  | `viewer@example.com`  | `viewer123`  |
+
+## 🌟 API Endpoints Used
+This project uses mock APIs provided by `Beeceptor`.
+
+### **Authentication**
+- `POST /login` - User authentication
+
+### **User Management**
+- `GET /users` - List users
+- `GET /users/{user_id}` - Get user details
+- `POST /users` - Create user
+- `PUT /users/{user_id}` - Update user
+- `DELETE /users/{user_id}` - Delete user (Admin only)
+
+### **Company Management**
+- `GET /companies` - List companies
+- `GET /companies/{company_id}` - Get company details
+- `POST /companies` - Create company
+- `PUT /companies/{company_id}` - Update company
+- `DELETE /companies/{company_id}` - Delete company
+
+### **Blog & Comments**
+- `GET /posts` - List all blog posts
+- `GET /posts/{post_id}` - Get post details
+- `POST /posts` - Create post
+- `PUT /posts/{post_id}` - Update post
+- `DELETE /posts/{post_id}` - Delete post
+- `GET /comments?postId={post_id}` - List comments for a post
+- `POST /comments` - Add a comment
+- `DELETE /comments/{comment_id}` - Delete a comment
+
+## 🏗️ Technologies Used
+- **React + Vite** (Frontend framework)
+- **TypeScript** (For type safety)
+- **Ant Design** (UI components)
+- **Zustand** (State management)
+- **React Query** (API data fetching and caching)
+- **Axios** (API requests)
+- **React Router** (Navigation & protected routes)
