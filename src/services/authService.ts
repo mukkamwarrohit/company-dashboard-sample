@@ -14,3 +14,5 @@ export const loginUser = async (email: string, password: string) => {
     throw new Error("Network error. Please try again.");
   }
 };
+
+

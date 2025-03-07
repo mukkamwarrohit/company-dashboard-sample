@@ -18,7 +18,7 @@ const getFromLocalStorage = <T>(key: string): T[] => {
 // Fetch All To-Dos & Cache in Local Storage
 const fetchTodos = async (): Promise<ToDo[]> => {
   const response = await axios.get<ToDo[]>(TODOS_API);
-  saveToLocalStorage("todos", response.data); // ✅ Save to Local Storage
+  saveToLocalStorage("todos", response.data); 
   return response.data;
 };
 
@@ -39,7 +39,7 @@ export const useCreateTodo = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (todo: Omit<ToDo, "id">) => {
-      // ✅ Generate a unique ID if no API response
+      
       const existingTodos = getFromLocalStorage<ToDo>("todos");
       const newId = existingTodos.length ? Math.max(...existingTodos.map((t) => t.id)) + 1 : 1;
 
@@ -47,7 +47,7 @@ export const useCreateTodo = () => {
 
       try {
         const response = await axios.post(TODOS_API, todo);
-        newTodo.id = response.data.id; // ✅ Ensure ID is set from API
+        newTodo.id = response.data.id; 
       } catch (error) {
         console.warn("Using local ID for new To-Do (API failed)");
       }

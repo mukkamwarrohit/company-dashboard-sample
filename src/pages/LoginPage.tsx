@@ -2,26 +2,43 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Input, Button, Card, Typography, Alert } from "antd";
 import { useAuthStore } from "../store/authStore";
-import { loginUser } from "../services/authService";
+
+// Mock users for login simulation
+const mockUsers = [
+  { email: "admin@example.com", password: "admin123", role: "admin" },
+  { email: "editor@example.com", password: "editor123", role: "editor" },
+  { email: "viewer@example.com", password: "viewer123", role: "viewer" },
+];
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
+  const { login } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (values: { email: string; password: string }) => {
     setLoading(true);
     setError(null);
-    try {
-      const { token, user } = await loginUser(values.email, values.password);
-      login(token, user);
-      navigate("/");
-    } catch {
+
+    // Check if user exists in mock data
+    const user = mockUsers.find(
+      (u) => u.email === values.email && u.password === values.password
+    );
+
+    if (!user) {
       setError("Invalid email or password");
-    } finally {
       setLoading(false);
+      return;
     }
+
+    // Simulate API token response
+    const token = "mock-jwt-token";
+
+    // Store user session
+    login(token, { id: 1, name: user.email, role: user.role });
+
+    // Redirect to dashboard
+    navigate("/");
   };
 
   return (

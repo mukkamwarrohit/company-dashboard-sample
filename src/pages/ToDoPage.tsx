@@ -51,8 +51,8 @@ const ToDoPage = () => {
 
   // Apply Sorting (Fix for `undefined` titles)
   filteredTodos = [...filteredTodos].sort((a, b) => {
-    const titleA = a.title || ""; // ✅ Ensure valid string
-    const titleB = b.title || ""; // ✅ Ensure valid string
+    const titleA = a.title || ""; 
+    const titleB = b.title || ""; 
     if (state.sort === "TITLE_ASC") {
       return titleA.localeCompare(titleB);
     } else {
@@ -104,9 +104,9 @@ const ToDoPage = () => {
         <Alert message="Error loading To-Dos!" type="error" showIcon />
       ) : (
         <Table 
-          dataSource={filteredTodos.map(todo => ({ ...todo, key: todo.id }))} // ✅ Ensure key is assigned
+          dataSource={filteredTodos.map(todo => ({ ...todo, key: todo.id }))} 
           columns={columns} 
-          rowKey="id" // ✅ Ensure React uses `id` as key
+          rowKey="id" 
           pagination={{ pageSize: 5 }} 
         />
       )}

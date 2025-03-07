@@ -118,7 +118,7 @@ export const useCreatePost = () => {
       return newPost;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] }); // ✅ Fixed invalidateQueries
+      queryClient.invalidateQueries({ queryKey: ["posts"] }); 
     },
   });
 };
@@ -134,7 +134,7 @@ export const useUpdatePost = () => {
       return post;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] }); // ✅ Fixed invalidateQueries
+      queryClient.invalidateQueries({ queryKey: ["posts"] }); 
     },
   });
 };
@@ -149,7 +149,7 @@ export const useDeletePost = () => {
       return postId;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] }); // ✅ Fixed invalidateQueries
+      queryClient.invalidateQueries({ queryKey: ["posts"] }); 
     },
   });
 };

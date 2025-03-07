@@ -6,8 +6,10 @@ import UserForm from "../components/users/UserForm";
 import UserDetailsModal from "../components/details/UserDetailsModal";
 import { usersReducer, UserSortType } from "../reducers/usersReducer";
 import { User } from "../types/user";
+import { useAuthStore } from "../store/authStore"; // Import auth store
 
 const UsersPage = () => {
+  const { user, hasRole } = useAuthStore();
   const { data: users = [], isLoading, isError } = useUsers();
   const { mutate: createUser } = useCreateUser();
   const { mutate: updateUser } = useUpdateUser();
@@ -27,17 +29,20 @@ const UsersPage = () => {
   );
 
   const handleEditUser = (user: User) => {
+    if (!hasRole(["admin", "editor"])) {
+      alert("You do not have permission to edit users.");
+      return;
+    }
     setEditingUser(user);
     setIsUserFormVisible(true);
   };
 
-  const handleSubmitUser = (userData: Omit<User, "id">) => {
-    if (editingUser) {
-      updateUser({ ...editingUser, ...userData });
-    } else {
-      createUser(userData);
+  const handleDeleteUser = (userId: number) => {
+    if (!hasRole(["admin"])) {
+      alert("Only admins can delete users.");
+      return;
     }
-    setIsUserFormVisible(false);
+    deleteUser(userId);
   };
 
   return (
@@ -60,16 +65,18 @@ const UsersPage = () => {
         <Select.Option value={UserSortType.SORT_BY_EMAIL}>Sort by Email</Select.Option>
       </Select>
 
-      <Button type="primary" onClick={() => { setEditingUser(null); setIsUserFormVisible(true); }} style={{ marginLeft: 10 }}>
-        Add User
-      </Button>
+      {hasRole(["admin"]) && (
+        <Button type="primary" onClick={() => { setEditingUser(null); setIsUserFormVisible(true); }} style={{ marginLeft: 10 }}>
+          Add User
+        </Button>
+      )}
 
       {isLoading ? (
         <Spin size="large" />
       ) : isError ? (
         <Alert message="Error loading users!" type="error" showIcon />
       ) : (
-        <UserTable users={filteredUsers} onEdit={handleEditUser} onDelete={deleteUser} onViewDetails={setSelectedUser} />
+        <UserTable users={filteredUsers} onEdit={handleEditUser} onDelete={handleDeleteUser} onViewDetails={setSelectedUser} />
       )}
 
       <UserDetailsModal visible={!!selectedUser} user={selectedUser} onClose={() => setSelectedUser(null)} />
